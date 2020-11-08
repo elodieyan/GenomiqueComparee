@@ -30,6 +30,7 @@ txt = file.read()
 querys = txt.split('# BLASTP 2.11.0+')[1:-1]
 database_info = querys[0].split('\n')[1:][1]
 bests_hit_file.write(database_info + '\n')
+bests_hit_file.write('query id\tsubject id\t% identity\talignment length\tmismatches\tgap opens\tq. start\tq. end\ts. start\ts. end\tevalue\tbit score\tquery length\tsubject length\tgaps' + '\n')
 
 for q in querys:
     lines = q.split('\n')[1:]
