@@ -3,9 +3,9 @@
 Created on Tue Nov 10 10:08:13 2020
 
 @author: Administrator
-"""
 
-"""
+
+
 Lancer dans le terminal:
     
 python3 path/to/parser.py path/to/file/to/parse path/to/result/file
@@ -20,17 +20,15 @@ from io import StringIO
 
 ####
 
-#file = open(str(sys.argv[1]),'r')
-#bests_hit_file = open(str(sys.argv[2]),'w')
-file = open(r'C:\Users\Administrator\Desktop\AMI2B\Gen_Comp\blast_outputs\Escherichia_coli_536-vs-Escherichia_coli_55989.txt','r')
+file = open(str(sys.argv[1]),'r')
+bests_hit_file = open(str(sys.argv[2]),'w')
 
 txt = file.read()
 querys = txt.split('# BLASTP 2.2.31+')[1:-1]
 database_info = querys[0].split('\n')[1:][1]
 string =''
 string += database_info + '\n'
-string += 'query id\tsubject id\t% identity\talignment length\tmismatches\tgap opens\tq. start\tq. end\ts. start\ts. end\tevalue\tbit score\tquery length\tsubject length\tgaps' + '\n'
-
+string += 'query id\tsubject id\t% identity\talignment length\tmismatches\tgap opens\tgaps\tq. start\tq. end\ts. start\ts. end\tevalue\tbit score\tquery length\tsubject length' + '\n'
 
 
 for q in querys:
@@ -49,17 +47,10 @@ dt = StringIO(string)
 
 df = pd.read_csv(dt, header = 1,sep="\t")
 df['% couverture'] = (df['alignment length'] / df[["query length","subject length"]].max(axis=1)) *100
-ndf = df[(df['% identity'] > 70) & (df['evalue'] < 0.01) & (df['% couverture'] >  60)]
 
-df.to_csv('C:/Users/Administrator/Desktop/AMI2B/Gen_Comp/best_hits/best_hits_avec_conditions.csv', sep='\t')
-
-
-"""
-% identity : 70%
-evalue : 0,01
-condition sur couverture : on divise longueur alignement par longueru max entre querye et subject : 60%
-
-
-"""
-
-
+df['evalue'] = df['evalue'].astype(float)
+df['% identity'] = df['% identity'].astype(float)
+df['% couverture'] = df['% couverture'].astype(float)
+ndf = df[['query id','subject id','% identity','evalue','% couverture']]
+ndf = ndf[(ndf['% identity'] > 70) & (df['evalue'] < 0.01) & (df['% couverture'] >  60)]
+ndf.to_csv(str(sys.argv[2]), sep='\t', index = False)
