@@ -1,0 +1,8 @@
+#### Pour mettre en.txt
+
+for file in blast_outputs/*.bl; do mv "$file" "$(basename "$file" .bl).txt"; done
+
+
+#### Pour appliquer le parser
+
+for file in /Users/Chanco/Desktop/AgroParisTech/3A/AMI2B/Genomique_comparee/full_pipeline/blast_outputs/*.txt; do python3 ./parser2.py $file /Users/Chanco/Desktop/AgroParisTech/3A/AMI2B/Genomique_comparee/full_pipeline/Best_hits/; done
