@@ -2,4 +2,6 @@ Pour changer toutes les extensions .bl en .txt (attention ça ne dupplique pas t
 Tu vas dans ton shell, tu te mets dans ton dossier avec tous tes fichiers puis tu tapes la commande : 
 forfiles /S /M *.bl /C "cmd /c rename @file @fname.txt" 
 
-
+pour le parser, tu te mets dans ton dossier
+puis 
+for %f in (*.txt) do python parser2.py %f 
