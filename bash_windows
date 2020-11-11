@@ -4,4 +4,12 @@ forfiles /S /M *.bl /C "cmd /c rename @file @fname.txt"
 
 pour le parser, tu te mets dans ton dossier
 puis 
-for %f in (*.txt) do python parser2.py %f 
+for %f in (*.txt) do python parser2_windows.py %f 
+
+la il faut mettre tout les fichiers de sortie (les "_compare.csv") dans un nouveau dossier
+
+ensuite on se met dans ce dossier et :
+for %f in (*.csv) do python BBH_une_boucle_for.py %f 
+
+et magie magie
+
