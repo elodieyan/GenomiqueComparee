@@ -24,7 +24,7 @@ database_info = querys[0].split('\n')[1:][1]
 string =''
 string += database_info + '\n'
 string += 'query id\tsubject id\t% identity\talignment length\tmismatches\tgap opens\tgaps\tq. start\tq. end\ts. start\ts. end\tevalue\tbit score\tquery length\tsubject length' + '\n'
-new_name = str(sys.argv[1]).split('/')[-1][:-4] + '_compare.txt'
+new_name = str(sys.argv[1]).split('/')[-1][:-4] + '_compare.csv'
 
 for q in querys:
     lines = q.split('\n')[1:]
