@@ -1,0 +1,5 @@
+Pour changer toutes les extensions .bl en .txt (attention ça ne dupplique pas tes fichiers mais les remplace) 
+Tu vas dans ton shell, tu te mets dans ton dossier avec tous tes fichiers puis tu tapes la commande : 
+forfiles /S /M *.bl /C "cmd /c rename @file @fname.txt" 
+
+
