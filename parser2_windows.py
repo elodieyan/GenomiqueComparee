@@ -49,4 +49,4 @@ df['% couverture'] = df['% couverture'].astype(float)
 ndf = df[['query id','subject id','% identity','evalue','% couverture']]
 ndf = ndf[(ndf['% identity'] > 70) & (df['evalue'] < 0.01) & (df['% couverture'] >  60)]
 
-ndf.to_csv(new_name, sep='\t', index = False)
+ndf.to_csv(new_name, index = False)
