@@ -52,7 +52,7 @@ for i in range (0,len(file_1.index)):
                 file_BBH.loc[len(file_BBH.index)] = file_1.loc[i,:].values
                 
 new_name = name_1 + '_BBH.csv'                
-file_BBH.to_csv(new_name, sep='\t', index = False)
+file_BBH.to_csv(new_name, index = False)
 
         
 
