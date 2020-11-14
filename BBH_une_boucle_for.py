@@ -17,8 +17,8 @@ from io import StringIO
 #file_1 = pd.read_csv(name_1) #colonne 1 : 536, colonne 2 : 55989
 #file_2 = pd.read_csv(name_2) #colonne 1 : 55989, colonne 2 : 536
 
-#name_1 = str(sys.argv[1])
-name_1 = 'Escherichia_coli_536-vs-Escherichia_coli_55989_compare.csv'
+name_1 = str(sys.argv[1])
+#name_1 = 'Escherichia_coli_536-vs-Escherichia_coli_55989_compare.csv'
 file_1 = pd.read_csv(name_1)
 name_1 = name_1.split('_compare.csv')[0]
 
