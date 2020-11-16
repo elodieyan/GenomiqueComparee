@@ -1,0 +1,9 @@
+Analyse de taille:					
+fichiers	nombre 	taille max	taille min	taille moyenne	taille variance
+Best-hits	441	5533	2669	3685.2607	454.0946
+BBH	441	5335	2651	3545.6598639455783	458.117533994954
+
+Analyse de proportion:
+				
+	% max	% min	% mean	% standart deviation	
+BBH/Best_hits	99.83488132094944	82.73964668404287	96.20445727682946	3.3272381888169766	
