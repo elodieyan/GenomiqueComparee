@@ -71,3 +71,10 @@ for genome1 in dico :
     
     
         
+import pickle
+                    
+with open('dico.pickle', 'wb') as handle:
+    pickle.dump(dico, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+with open('dico_clique.pickle', 'wb') as handle:
+    pickle.dump(dico_clique, handle, protocol=pickle.HIGHEST_PROTOCOL)
