@@ -8,6 +8,8 @@ import pandas as pd
 
 import os
 
+# CONSTRUCTION DU DICTIONNAIRE 
+
 # on indique l'endroit où se trouvent nos fichiers BBH
 directory = r'C:\Users\Elodie\Documents\Ecole\APT-3A\Master\GenomiqueComparee\Fichiers_bbh'
 
@@ -37,6 +39,35 @@ for file in os.scandir(directory):
             elif bbh_file['query id'][i] not in dico[bbh_file['query id'][0].split('_')[0]] :
                 dico[bbh_file['query id'][0].split('_')[0]][bbh_file['query id'][i]] = [] 
                 dico[bbh_file['query id'][0].split('_')[0]][bbh_file['query id'][i]].append(bbh_file['subject id'][i])
+
+
+# CONCERNANT LES CLIQUES 
+
+# on crée un dictionnaire qui va stocker les cliques
+dico_clique = {}
+
+# on crée un dictionnaire pour stocker les génomes déjà parcourus 
+
+genomes_vus = {}
+
+# on parcourt les génomes
+for genome1 in dico :
+    # pour chaque génome vu, on l'ajoute dans le dictionnaire
+    genomes_vus[genome1]=1
+    
+    # ce qui permet de ne parcourir qu'une fois chaque génome face à un autre
+    # et donc d'éviter les doublons
+    for genome2 in dico.keys() - genomes_vus.keys() :
         
+        # on parcourt les gènes du génome 1
+        for gene1 in dico[genome1] :
+            
+            #et ceux du génome 2
+            for gene2 in dico[genome2] :
+                
+                # si les gènes sont les mêmes, on ajoute dans le dico_clique
+                if dico[genome2][gene2] == dico[genome1][gene1]:
+                    dico_clique[gene2] = dico[genome2][gene2]
+    
     
         
