@@ -42,32 +42,32 @@ for file in os.scandir(directory):
 
 
 # CONCERNANT LES CLIQUES 
+# recherche du genome avec le moins de gènes, 
+# cela servira de référence pour la recherche des cliques
+genes_min = 10000
+for genome in dico :
+    if len(dico[genome]) < 10000 :
+        genes_min = len(dico[genome])
+        genome_min = genome
+print(genome_min, len(dico[genome_min]))                
+
 
 # on crée un dictionnaire qui va stocker les cliques
 dico_clique = {}
 
-# on crée un dictionnaire pour stocker les génomes déjà parcourus 
+clique_num = 1
 
-genomes_vus = {}
-
-# on parcourt les génomes
-for genome1 in dico :
-    # pour chaque génome vu, on l'ajoute dans le dictionnaire
-    genomes_vus[genome1]=1
-    
-    # ce qui permet de ne parcourir qu'une fois chaque génome face à un autre
-    # et donc d'éviter les doublons
-    for genome2 in dico.keys() - genomes_vus.keys() :
-        
-        # on parcourt les gènes du génome 1
-        for gene1 in dico[genome1] :
-            
-            #et ceux du génome 2
-            for gene2 in dico[genome2] :
-                
-                # si les gènes sont les mêmes, on ajoute dans le dico_clique
-                if dico[genome2][gene2] == dico[genome1][gene1]:
-                    dico_clique[gene2] = dico[genome2][gene2]
+for gene1 in dico[genome_min]:
+    if len(dico[genome_min][gene1]) == len(dico) :
+        for genome in dico.keys()-genome_min:
+            for gene2 in dico[genome]:
+                if len(dico[genome][gene2]) == len(dico) and dico[genome][gene2] == dico[genome_min][gene1] and dico[genome][gene2] not in dico_clique.values():
+                   dico_clique['Clique_'+str(clique_num)] = dico[genome][gene2]
+                   clique_num+=1 
+                else:
+                    continue
+    else:
+        continue
     
     
         
