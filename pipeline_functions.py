@@ -49,15 +49,28 @@ def Best_hit(path_to_file,Id_perc, ev_treshold, cover_perc):
 def BBH(Best_hit_path,genome1,genome2):
     file1 = pd.read_csv(Best_hit_path + genome1 + '-vs-' + genome2 + '_Best_hit.txt', header=0, sep='\t')
     file2 = pd.read_csv(Best_hit_path + genome2 + '-vs-' + genome1 + '_Best_hit.txt', header=0, sep='\t')
-    df_BBH = pd.DataFrame(columns = ['query id','subject id','% identity','evalue','% couverture'])
-    for i in range (0,len(file1.index)):
-        if (file2.loc[file2['subject id'] == file1.loc[file1.index[i],'query id']]).empty == False:
-            x = (file2.loc[file2['subject id'] == file1.loc[file1.index[i],'query id']])
-            for k in range (0,len(x.index)):
-                if x.loc[x.index[k],'query id'] == file1.loc[file1.index[i],'subject id']:
-                    df_BBH.loc[len(df_BBH.index)] = file1.loc[i,:].values
-    return df_BBH
+    dic1_keys = list(file1['query id'])
+    dic1_values = list(file1['subject id'])
     
+    dic2_keys = list(file2['query id'])
+    dic2_values = list(file2['subject id'])
+    
+    dic1 = dict(zip(dic1_keys,dic1_values))
+    dic2 = dict(zip(dic2_keys,dic2_values))
+    querys = []
+    subjects = []
+    t = 0
+    for key in dic1_keys:
+        t+=1
+        if dic1[key] in dic2_keys and dic2[dic1[key]] == key:
+            querys.append(key)
+            subjects.append(dic1[key])
+        else:
+            continue
+        
+    df_BBH = pd.DataFrame({'query id':querys,'subject id':subjects})
+    return df_BBH
+        
     
 
 def clique(repertory_path):
@@ -95,7 +108,7 @@ def clique(repertory_path):
         if len(dico[genome]) < 10000 :
             genes_min = len(dico[genome])
             genome_min = genome
-    print(genome_min, len(dico[genome_min]))                
+    #print(genome_min, len(dico[genome_min]))                
     
     # on crée un dictionnaire qui va stocker les cliques
     dico_clique = {}
