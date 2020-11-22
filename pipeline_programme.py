@@ -75,10 +75,14 @@ for genome1 in analyzed_genomes:
 
 # Cliques
 
-dico,dico_clique = clique(analyse_name)
+dico,dico_clique,genes_min,cliques_num = clique(analyse_name)
 with open(analyse_name + 'dico.pickle', 'wb') as handle:
     pickle.dump(dico, handle, protocol=pickle.HIGHEST_PROTOCOL)
     
 with open(analyse_name + 'dico_clique.pickle', 'wb') as handle:
     pickle.dump(dico_clique, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+summary = 'smaller genome \t nb cliques' + '\n' + str(genes_min) + '\t' +str(cliques_num)
+with open(analyse_name + 'summary.txt', 'w') as file:
+    file.write(summary)
                 

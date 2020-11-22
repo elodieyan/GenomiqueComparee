@@ -113,4 +113,4 @@ def clique(repertory_path):
         else:
             continue
     
-    return dico,dico_clique
+    return dico,dico_clique, genes_min,clique_num
