@@ -62,6 +62,9 @@ for genome1 in analyzed_genomes:
 bbh_files_path = analyse_name +'BBH_files/'
 os.makedirs(bbh_files_path)
 analyzed_genomes2 = analyzed_genomes.copy()
+
+
+
 for genome1 in analyzed_genomes:
     for genome2 in analyzed_genomes2:
         if genome1 == genome2:
@@ -75,14 +78,18 @@ for genome1 in analyzed_genomes:
 
 # Cliques
 
-dico,dico_clique,genes_min,cliques_num = clique(analyse_name)
+dico,cliques_nb, genes_min = clique(bbh_files_path)
+print(cliques_nb)
+
+# Export results
+
 with open(analyse_name + 'dico.pickle', 'wb') as handle:
     pickle.dump(dico, handle, protocol=pickle.HIGHEST_PROTOCOL)
     
-with open(analyse_name + 'dico_clique.pickle', 'wb') as handle:
-    pickle.dump(dico_clique, handle, protocol=pickle.HIGHEST_PROTOCOL)
+#with open(analyse_name + 'dico_clique.pickle', 'wb') as handle:
+#    pickle.dump(dico_clique, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-summary = 'smaller genome \t nb cliques' + '\n' + str(genes_min) + '\t' +str(cliques_num)
+summary = 'smaller genome \t nb cliques' + '\n' + str(genes_min) + '\t' +str(cliques_nb)
 with open(analyse_name + 'summary.txt', 'w') as file:
     file.write(summary)
                 

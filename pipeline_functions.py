@@ -74,56 +74,42 @@ def BBH(Best_hit_path,genome1,genome2):
     
 
 def clique(repertory_path):
-        # on crée le dictionnaire qui contiendra tous les best-its pour chaque gène de chaque génome
-    dico = {}  
-    
-    # on parcourt tous les fichiers
-    for file in os.scandir(repertory_path + 'BBH_files/'):
+    dico = {}
+
+    for file in os.scandir(repertory_path):
         
-        if file.path.endswith(".csv") :
-            bbh_file = pd.read_csv(file,header=0,sep='\t')
-            
-            # pour chaque fichier, on vérifie si le génome est déjà une du dictionnaire
-            # si ce n'est pas le cas, on crée la clé qui sera du nom du génome (on constitue en fait un sous-dictionnaire)
-            if bbh_file['query id'][0].split('_')[0] not in dico:
-                dico[bbh_file['query id'][0].split('_')[0]] = {}  
-            
-            #on parcourt le fichier
-            for i in range (0,len(bbh_file.index)):
+        filename = file.name
+        genome1_name = filename.split('-vs-')[0]
+        genome2_name = filename.split('-vs-')[1].split('_BBH.csv')[0]
+        bbh_file = pd.read_csv(file, header=0,sep='\t')
+        
+        for genome in [genome1_name,genome2_name]:
+            if genome not in dico:
+                dico[genome] = {}
+        
+        for gene_query,gene_subject in zip(list(bbh_file['query id']),list(bbh_file['query id'])):
+            if gene_query not in dico[genome1_name]:
+                dico[genome1_name][gene_query] = [gene_subject]
+            else:
+                dico[genome1_name][gene_query].append(gene_subject)
                 
-                # pour chaque gène, on vérifie s'il est déjà une clé du dictionnaire
-                # si c'est le cas, on ajoute le gène best-hit de l'autre génome comme valeur pour cette clé
-                if bbh_file['query id'][i] in dico[bbh_file['query id'][0].split('_')[0]]:
-                    dico[bbh_file['query id'][0].split('_')[0]][bbh_file['query id'][i]].append(bbh_file['subject id'][i])
-                
-                # si ce n'est pas le cas, on crée la clé puis on ajoute le gène best-hit de l'autre génome comme valeur pour cette clé
-                elif bbh_file['query id'][i] not in dico[bbh_file['query id'][0].split('_')[0]] :
-                    dico[bbh_file['query id'][0].split('_')[0]][bbh_file['query id'][i]] = [] 
-                    dico[bbh_file['query id'][0].split('_')[0]][bbh_file['query id'][i]].append(bbh_file['subject id'][i])
-        # CONCERNANT LES CLIQUES 
-    # recherche du genome avec le moins de gènes, 
-    # cela servira de référence pour la recherche des cliques
+            if gene_subject not in dico[genome2_name]:
+                dico[genome2_name][gene_subject] = [gene_query]
+            else:
+                dico[genome2_name][gene_subject].append(gene_query)
+        
     genes_min = 10000
     for genome in dico :
-        if len(dico[genome]) < 10000 :
+        if len(dico[genome]) < genes_min :
             genes_min = len(dico[genome])
-            genome_min = genome
-    #print(genome_min, len(dico[genome_min]))                
+            genome_min = genome   
     
     # on crée un dictionnaire qui va stocker les cliques
-    dico_clique = {}
-    clique_num = 1
+    cliques_nb = 0
+    dic = dico[genome_min]
+    l = list(dic.values())
+    for i in l:
+        if len(i) == len(dico) - 1:
+            cliques_nb += 1
     
-    for gene1 in dico[genome_min]:
-        if len(dico[genome_min][gene1]) == len(dico) :
-            for genome in dico.keys()-genome_min:
-                for gene2 in dico[genome]:
-                    if len(dico[genome][gene2]) == len(dico) and dico[genome][gene2] == dico[genome_min][gene1] and dico[genome][gene2] not in dico_clique.values():
-                       dico_clique['Clique_'+str(clique_num)] = dico[genome][gene2]
-                       clique_num+=1 
-                    else:
-                        continue
-        else:
-            continue
-    
-    return dico,dico_clique, genes_min,clique_num
+    return dico, cliques_nb, genes_min

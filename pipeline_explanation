@@ -12,6 +12,8 @@ Le script va créer dans un repertoire, destiné à stocker toutes les analyses,
 
 Pour cela il fera appel à votre répertoire blast_outputs qu'il faudra que vous définissiez dans le paramètre blast_outputs_path.
 
+Le script many_analysis permet de faire varier les paramètres (identité,evalue, couverture). L'entiereté du pipeline est en mode fonction avec comme paramètre ces derniers et retourne en plus une ligne d'info avec le chemin du repertoire qui contient les fichiers de chaque expérience, toutes les infos de l'expérience et le nb de cliques obtenus, puis cette ligne est ajouté à une table qui contient l'ensemble des infos de toutes les expériences que vous avez lancées. Attention si vous relancer 2 fois une même expérience il y aura un doublon de ligne (flemme de faire une protection contre ça) donc faites gaffe^^.
+
 Windows: 
 
 J'ai pour l'instant fait ce pipeline uniquement pour mac, le seul truc qui va vraiment changer c'est le fait que tout les pd.read_csv comporte header et sep, à modifier si besoin dans toutes les fonctions de pipeline_functions.py, et la manière d'écrire les chemins qu'il faut changer à chaque fois qu'il y a le os.makedirs dans le pipeline_programme (3 fois normalement).
