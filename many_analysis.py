@@ -108,26 +108,35 @@ def pipeline(genomes_selected,id_perc, ev_tresh, cov_perc, com):
     return (analyse_name, len(genomes_selected),genomes_selected,id_perc, ev_tresh, cov_perc,cliques_nb ,com)
 
 
-bar = progressbar.ProgressBar(max_value = 6)
+"""
+ATTENTION : Il faut créer la table analyse_table qqpart dans vos repertoir 
+si c'est la première fois que vous lancez un run, vous pouvez faire ces commandes:
+    analyse_table = pandas.DataFrame(columns = ['Analysis_name','nb_genomes','genomes','id %','evalue','cover %','cliques_number','commentary'])
+    analyse_table.to_csv('path/to/ton/repertoire/analyse_table.csv')
+"""
+bar = progressbar.ProgressBar(max_value = len(list_genomes))
 i=0
-bar.update(i)
-for ide in [60,65,70,75,80,85,90]:
-    for ev in [0.1,0.05,0.01,0.005,0.001]:
-        for cov in [50,60,70,80,90]:
-            analyzed_genomes = list_genomes.copy()
-            rd.shuffle(analyzed_genomes)
-            genomes_selection = analyzed_genomes
-            com = ''
-            tupl = pipeline(genomes_selection,ide, ev, cov,com)
-            df = pd.DataFrame([tupl], columns = ['Analysis_name','nb_genomes','genomes','id %','evalue','cover %','cliques_number','commentary'])
-            analyse_table = pd.read_csv('/Users/Chanco/Desktop/AgroParisTech/3A/AMI2B/Genomique_comparee/full_pipeline/Analyses/analyse_table.csv',\
+bar.update()
+
+for p in [10**-1]+[10**-i for i in list(range(10,81,10))]:
+    n = 0
+    while n <= 5:
+        analyse_table = pd.read_csv('/Users/Chanco/Desktop/AgroParisTech/3A/AMI2B/Genomique_comparee/full_pipeline/GenomiqueComparee/analyse_table.csv',\
                                             sep = '\t',header=0)
-            analyse_table.append(df)
+        analyzed_genomes = list_genomes
+        #rd.shuffle(analyzed_genomes)
+        genomes_selection = analyzed_genomes[0:21]
+            
+        com = 'ev_puissance'
+        tupl = pipeline(genomes_selection,70, p, 60,com)
+        df = pd.DataFrame([tupl], columns = ['Analysis_name','nb_genomes','genomes','id %','evalue','cover %','cliques_number','commentary'])
+        analyse_table = analyse_table.append(df)
+        analyse_table.to_csv('/Users/Chanco/Desktop/AgroParisTech/3A/AMI2B/Genomique_comparee/full_pipeline/GenomiqueComparee/analyse_table.csv',sep='\t', index=False)
+        n += 1
     i += 1
     bar.update(i)
 bar.finish()
         
-analyse_table.to_csv('/Users/Chanco/Desktop/AgroParisTech/3A/AMI2B/Genomique_comparee/full_pipeline/Analyses/analyse_table.csv',sep='\t',index=False)
     
     
 
