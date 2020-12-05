@@ -23,7 +23,8 @@ file = open(path_to_file,'r')
 txt = file.read()
 querys = txt.split('# BLASTP 2.6.0+')[1:-1]
 string =''
-string += 'query id\tsubject id\t% identity\talignment length\tmismatches\tgap opens\tgaps\tq. start\tq. end\ts. start\ts. end\tevalue\tbit score\tquery length\tsubject length' + '\n'
+string += 'query id\tsubject id\t% identity\talignment length\tmismatches\tgap opens\tq. start\tq. end\ts. start\ts. end\tevalue\tbit score\tquery length\tsubject length\tgaps' + '\n'
+
 for q in querys:
     lines = q.split('\n')[1:]
     if lines[2] == '# 0 hits found':
