@@ -77,8 +77,8 @@ for k in range (0,len(fichiers)) :
             #on ouvre le fichier et on stocke la liste des evalues
             ofi = open(repertoire+"/"+fichiers[k],'r')
             df = pd.read_csv(ofi)
-            evalues_cds +=[[df['evalue']]]
-            evalues_cds_ens +=[df['evalue']]
+            evalues_cds +=[df['evalue'].tolist()]
+            evalues_cds_ens +=[df['evalue'].tolist()]
     elif type == 'igorf':
         if [b2,b1] in deja_vu_igorf: 
             print()
@@ -87,31 +87,37 @@ for k in range (0,len(fichiers)) :
             bons_fichier_igorf += [fichiers[k]]
             ofi = open(repertoire+"/"+fichiers[k],'r')
             df = pd.read_csv(ofi)
-            evalues_igorf +=[[df['evalue']]]
-            evalues_igorf_ens +=[df['evalue']]
- 
-plt.hist(evalues_cds[2], density=True)    
-plt.show()
-    
-counts,bin_edges = np.histogram(evalues_cds_ens,20,density=True)
-bin_centres = (bin_edges[:-1] + bin_edges[1:])/2
-plt.plot(bin_centres, counts) 
+            evalues_igorf +=[df['evalue'].tolist()]
+            evalues_igorf_ens +=[df['evalue'].tolist()]
+# 
+#plt.hist(evalues_cds[2], density=True)    
+#plt.show()
+#    
+#counts,bin_edges = np.histogram(evalues_cds_ens,20,density=True)
+#bin_centres = (bin_edges[:-1] + bin_edges[1:])/2
+#plt.plot(bin_centres, counts) 
 
 #myfig, (ax1, ax2) = plt.subplots(nrows = 1, ncols = 2)
 plt.subplot(2,1,1)
 for k in range (0,len(evalues_cds)):
-    counts,bin_edges = np.histogram(evalues_cds[k],200,density=True)
+#    #pour enlevé les 0 mais je suis pas sur que ça soit unebonne idée
+#    for elem in evalues_cds[k]:
+#        if elem == 0:
+#            evalues_cds[k].remove(elem)
+    counts,bin_edges = np.histogram(evalues_cds[k],2000,density=True)
     bin_centres = (bin_edges[:-1] + bin_edges[1:])/2
     plt.plot(bin_centres, counts) 
     plt.title('CDS VS CDS')
-    plt.xlim(0,4000) 
+    plt.xlim(-0.1,0.1) 
     #plt.show()
 plt.subplot(2,1,2)
 for k in range (0,len(evalues_igorf)):
-    counts,bin_edges = np.histogram(evalues_igorf[k],200,density=True)
+#    for elem in evalues_igorf[k]:
+#        if elem == 0:
+#            evalues_igorf[k].remove(elem)
+    counts,bin_edges = np.histogram(evalues_igorf[k],2000,density=True)
     bin_centres = (bin_edges[:-1] + bin_edges[1:])/2
     plt.plot(bin_centres, counts) 
     plt.title('IGORF VS IGORF')
-    plt.xlim(0,100)       
+    plt.xlim(-0.1,0.2)       
     plt.show()  
-        
